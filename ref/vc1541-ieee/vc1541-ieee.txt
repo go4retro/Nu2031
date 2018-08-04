@@ -1,0 +1,49 @@
+
+                   Parallel IEEE 488 interface for VC1541
+                                      
+   (c) 64er magazin
+   
+   Someone asked me about the parallel IEEE 488 interface for the VC1541,
+   that has been published in an early issue of the famous german "64er"
+   magazin. Well, I don't know if this magazin still exists (long out of
+   the scene) but then I have this old issues in case I need to repair my
+   interface.
+   
+   I have redrawn the schematics now, so there is a nice schematic
+   instead of my sketchy hand-drawn one. People who know what they are
+   doing can see how to produce such a board.
+   
+  Disclaimer
+  
+   There is absolutely NO WARRANTY, neither expressed nor implied! Noone
+   can be held responsible for any damage arising from the use or
+   building of this interface or even from reading these pages! I do not
+   claim nor guarantee that the hardware and software can be used for
+   anything useful! 
+   
+   The nicely drawn schematics are available in vc1541-ieee.png and
+   vc1541-ieee.ps. The socket on the right is the IEEE488 connector. In
+   vc1541-ieee.desc.txt you find the schematics in a text file together
+   with some info how to build it. Hint: The ouput lines PA0-7, PB0-7
+   (Pins 2-17) and CA1 and CA2 (Pins 40,39) are not connected through to
+   the motherboard! Note that the IC and socket labeled "UC3" has to be
+   the VIA 6522 that is connected to the IEC bus. This might be different
+   on different versions, it is UC3 on my 1540048-01 circuit board(short
+   board). The interface is basically modelled after the 2031 schematics,
+   the IEEE488 sister drive to the VC1541.
+   
+   To use the interface the VC1541 needs a new ROM. In the 64er magazin
+   they listed a program vc1541-ieee.mkrom.prg to read and patch the
+   original VC1541 ROM. You can read an ASCII listing in
+   vc1541-ieee.mkrom.txt. Because I was too lazy to type in the whole
+   program, only the very necessary parts are there. So before you start,
+   you have to do a "POKE 56,80" to protect the area above $5000, where
+   the modified ROM is saved. When the program has finished, you have to
+   save the area from $5000 to $6fff with a machine language monitor.
+   This file has to be burned into an EPROM that replaces the ROM with
+   the upper half of the VC1541 DOS. For the exact location please see
+   http://www.funet.fi/pub/cbm/schematics/drives/new/1541/index.html.
+   The original 2031 ROM is different from the VC1541 ROM in both ROM
+   chips, but the patch manages to get the changes into one ROM chip
+   only, so only one EPROM is needed.
+     _________________________________________________________________

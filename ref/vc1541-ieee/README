@@ -1,0 +1,11 @@
+
+This is the description of the IEEE488 interface published in the
+German 64er magazin a long time ago. It is basically modelled
+after the 2031 schematics, the IEEE488 sister drive to the VC1541.
+
+Code to patch the VC1541 ROM is provided. The original 2031 ROM
+is different in both ROM chips, but the patch manages to get the
+changes into one ROM chip only.
+
+A. Fachat
+

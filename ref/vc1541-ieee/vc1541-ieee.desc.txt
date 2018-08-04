@@ -1,0 +1,140 @@
+
+This is the schematics for the (parallel) IEEE 488 interface published
+in the german 64er magazin some years ago.
+
+Disclaimer of warranty
+
+There is _NO_WARRANTY_ for this stuff - neither the 64er magazin nor I can
+be made responsible for any damage occuring while using the interface,
+building it or even reading this file! There is no guarantee that this
+stuff will work for any purpose whatsoever.
+The magazin gives no warranty nor can I guarantee that the below
+circuit is transfered to this file correctly.
+
+You are warned.
+
+How it works:
+
+This interface is replacing the serial IEC circuits on the motherboard
+of the 1541 in the way that they are put in a socket under the 6522 VIA 
+that controls these circuits. 
+It uses the common IEEE 488 interface circuits 75160 (for the data bus) 
+and 75161 (for the control lines).
+In addition to this there is a 74ls136 (4 open collector xor) that 
+implement that the computer sees the interface after issuing an ATN
+signal, even without the drive's CPU doing anything.
+The incoming ATN is inverted (IC4 Pins 1,2,3) and produces an interrupt
+via CA1 (IC1 Pin 40). The inverted ATN is also XOR'd (IC4 Pins 13,12,11) 
+with the ATNA output (IC1 Pin 10). This output is inverted and put on the 
+NDAC (IC4 Pins 4,5,6 -> S2 8) and NRFD (IC4 Pins 10,9,8 -> S2 7) lines 
+to block the bus if an ATN occured and the drive has not yet reacted
+(via PB0 = IC1 Pin 10).
+Two diodes are needed to implement the drive device number switches.
+One diode feeds the IEEE 488 reset signal (IFC) to the drive's 
+RESET line. Two additional pullup resistors are needed.
+
+Parts:  
+	S1,3	40 pin DIL Socket	S1 is the socket in the drive that
+					supplies the CPU signals. S3 is the
+					socket the 6522 is then plugged in.
+	S2	24 pin AMP Connector	IEEE 488 connector
+	IC1	6522 VIA		Interface Circuit (already in the 
+					drive)
+	IC2	75160			data line driver (20 pin)
+	IC3	75161			control line driver (20 pin)
+	IC4	74ls136			4* o.c. xor w/ 2 inputs
+	R1-2	3k3			pullup	
+	D1-3	1N4148
+	J1-2	2 Pin jumper		device number jumper
+
+Schematics:
+
+Well, this is my first try to put schematics in an ASCII file, so please
+excuse any inconveniences. I will try to divide the schematics into
+several parts to avoid line crossing.
+
+-----------------------------------------------------------------------------
+
+Data Bus
+D1-8: IC1 Pin 2-9 -------- IC2 Pin 19-12,  IC2 Pin 2-9 -------- S2 1-4, 13-16
+
+Control lines
+NRFD: IC1 Pin 11  -------- IC3 Pin 16,     IC3 Pin 5   -------- S2 7
+NDAC: IC1 Pin 12  -------- IC3 Pin 17,     IC3 Pin 4   -------- S2 8
+EOI:  IC1 Pin 13  -------- IC3 Pin 14,     IC3 Pin 7   -------- S2 5
+DAV:  IC1 Pin 16  -------- IC3 Pin 15,     IC3 Pin 6   -------- S2 6
+
+Flow control
+TxRx: IC1 Pin 14  -------- IC2 Pin 1
+                    |------IC3 Pin 1
+
+Reset
+Res:  IC1 Pin 34  -------- S1  Pin 34
+		    |-------------------|>|-------------------- S2 9
+                                        D1
+
+Voltage
+Vcc:  IC1 Pin ?? oops ------------ S1 Pin ??
+			|--------- IC2 Pin 20
+			|--------- IC3 Pin 20
+			|--------- IC4 Pin 14, 9, 2, 5
+			|--------- R1 
+			|--------- R2
+
+Gnd:  IC1 Pin ?? oops ------------ S1 Pin ??
+			|--------- IC2 Pin 10, 11
+			|--------- IC3 Pin 10
+			|--------- IC4 Pin 7
+			|--------- S2 Pins 18-24, 12
+
+Device number		D2      J1
+PB0A: IC1 Pin 10  ------|>|-----O------ IC1 Pin 39
+      IC1 Pin 11  ------|>|-----O---|			(see also NRFD!)
+			D3      J2
+
+ATN/A logic
+ATN:  IC1 Pin 17  -------- IC1 Pin 40
+		    |----- R1				(pullup)
+		    |----- IC4 Pin 3, 12
+
+ATNI: IC3 Pin 13  -------- IC4 Pin 1
+
+PB0B: IC1 Pin 10  -------- IC4 Pin 13			(see also PB0A)
+
+ATN1: IC4 Pin 11  -------- R2				(pullup)
+		    |----- IC4 Pin 10, 4
+
+ATN2: IC4 Pin 8   -------- S2 7				(see also NRFD)
+
+ATN3: IC4 Pin 6   -------- S2 8				(see also NDAC)
+
+through-connections
+6522: IC1 Pins 1, 18-38 ------- S1 Pins 1,18-38
+
+forgotten....
+SRQ:  IC3 Pin 9   -------- S2 10
+ATNX: IC3 Pin 8   -------- S2 11
+REN:  IC3 Pin 2   -------- S2 17
+
+-----------------------------------------------------------------------------
+
+Well, I hope I haven't fogotten anything more (discovered the last three
+lines only after redrawing the schematics with this file...).
+Here is a hopefully understandable sketch of how to mount this stuff.
+
+               IC1	   IC2,3,4
+             ________      _____        ____
+             |      |      |   |        | __ S2 (IEEE 488 connector)
+             u  S3  u      u   u	| |
+        -------------------------------------- 
+           |      |
+
+           u  S1  u			1541 motherboard
+--------------------------------------------------------------------    
+
+The 6522 that is to be socketed should be the UC3 VIA on the motherboard
+of the 1541, but that may depend on the motherboard version.
+
+Then you have to replace the upper page ROM with an EPROM containing the
+new kernel code.
+
