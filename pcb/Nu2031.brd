@@ -4162,7 +4162,7 @@ design rules under a new name.</description>
 <contactref element="ROM" pad="TP"/>
 <via x="29.21" y="1.27" extent="1-16" drill="1"/>
 <via x="26.67" y="1.27" extent="1-16" drill="1"/>
-<wire x1="29.845" y1="26.67" x2="29.845" y2="5.08" width="0.1524" layer="1"/>
+<wire x1="29.845" y1="24.13" x2="29.845" y2="5.08" width="0.1524" layer="1"/>
 <wire x1="29.845" y1="5.08" x2="29.845" y2="1.905" width="0.1524" layer="1"/>
 <wire x1="29.845" y1="1.905" x2="29.21" y2="1.27" width="0.1524" layer="1"/>
 <wire x1="29.21" y1="1.27" x2="26.67" y2="1.27" width="0.1524" layer="1"/>
@@ -4170,7 +4170,7 @@ design rules under a new name.</description>
 <wire x1="17.13" y1="25.65" x2="17.8475" y2="25.65" width="0.1524" layer="1"/>
 <wire x1="17.8475" y1="25.65" x2="18.0975" y2="25.4" width="0.1524" layer="1"/>
 <wire x1="18.0975" y1="25.4" x2="28.575" y2="25.4" width="0.1524" layer="1"/>
-<wire x1="28.575" y1="25.4" x2="29.845" y2="26.67" width="0.1524" layer="1"/>
+<wire x1="28.575" y1="25.4" x2="29.845" y2="24.13" width="0.1524" layer="1"/>
 <contactref element="R3" pad="1"/>
 <wire x1="28.59" y1="5.08" x2="29.845" y2="5.08" width="0.1524" layer="1"/>
 </signal>
